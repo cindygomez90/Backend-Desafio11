@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat</title>
+</head>
+<body>
+    <h1>Chat</h1>
+    
+    <form action="/api/messages/sendMessage" method="post" id="chatbox">   
+    
+        <input type="text" name="message" placeholder="Mensaje" required>
+        <button type="submit" class="boton">Enviar</button>
+    </form>
+
+
+    <div id="chat">
+        {{#each messages}}
+        {{/each}}         
+    </div> 
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+
+</body>
+</html>

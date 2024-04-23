@@ -1,0 +1,48 @@
+[
+  {
+    "title": "product1",
+    "description": "cartera de cuero",
+    "price": 15000,
+    "thumbail": "imagen",
+    "code": "abc01",
+    "stock": 30,
+    "pid": 1
+  },
+  {
+    "title": "product3",
+    "description": "portalapicero",
+    "price": 2000,
+    "thumbail": "imagen",
+    "code": "abc03",
+    "stock": 5,
+    "pid": 3
+  },
+  {
+    "title": "product2",
+    "description": "billetera de cuero",
+    "price": 3000,
+    "thumbail": "imagen",
+    "code": "abc02",
+    "stock": 10,
+    "pid": 3
+  },
+  {
+    "title": "product4",
+    "description": "bandolera animal print",
+    "price": 13000,
+    "thumbail": "imagen",
+    "code": "abc04",
+    "stock": 2,
+    "pid": 4
+  },
+  {
+    "title": "product5",
+    "description": "cartuchera",
+    "price": 1500,
+    "thumbail": "imagen",
+    "code": "abc05",
+    "stock": 15,
+    "pid": 5
+  }
+
+]

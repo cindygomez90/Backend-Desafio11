@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+
+<body>
+    <h1>| Wemí cueros |</h1>
+    
+    <div class="mensaje-bienvenida">
+        {{#if user}}
+            <h2>Bienvenid@, {{user.first_name}}!</h2>
+            <form action="/api/sessions/logout" method="POST" class="boton boton-cerrar">
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        {{/if}}
+    </div>
+
+    <h2>Esta es nuestra tienda online!</h2>
+
+    <div>
+        {{#each products}}
+        <li>
+            <img src="{{this.thumbnail}}" alt="Imagen del Producto"><br>
+            Nombre: {{this.title}} <br>
+            Descripción: {{this.description}}<br>
+            Precio: {{this.price}}<br>
+            Código: {{this.code}}<br>
+            Stock: {{this.stock}}<br>
+            Categoría: {{this.category}}<br>
+
+            <button onclick="addToCart('{{this._id}}', '{{this.title}}', {{this.price}})">Añadir al carrito</button>
+        </li>
+        {{/each}}
+
+        {{! configuración de las páginas}}
+        {{#if hasPrevPage}}
+        <a href="products?pageQuery={{prevPage}}" class="pag-link">Anterior</a>
+        {{/if}}
+        <label class="pag-actual">{{page}}</label>
+        {{#if hasNextPage}}
+        <a href="/products?pageQuery={{nextPage}}" class="pag-link">Siguiente</a>
+        {{/if}}
+    </div>
+
+    <script>
+        let currentCart
+
+        function addToCart(productId, productName, productPrice) {            
+            if (!currentCart) {                
+                fetch('/api/carts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(function(response) {
+                    return response.json()
+                })
+                .then(function(data) {                    
+                    currentCart = data.payload;                    
+                    addProductToCart(currentCart._id, productId, productName, productPrice)
+                })
+                .catch(function(error) {
+                    console.error('Error al obtener o crear el carrito:', error)
+                });
+            } else {                
+                addProductToCart(currentCart._id, productId, productName, productPrice)
+            }
+        }
+
+        function addProductToCart(cartId, productId, productName, productPrice) {            
+            fetch(`/api/carts/${cartId}/products/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(function(response) {
+                return response.json()
+            })
+            .then(function(data) {                
+                alert(`Se ha añadido ${productName} a tu carrito`)
+            })
+            .catch(function(error) {
+                console.error('Error al agregar el producto al carrito:', error)
+            });
+        }
+    </script>
+
+</body>
+</html>

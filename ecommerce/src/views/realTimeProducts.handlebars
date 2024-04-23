@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <title>realTimeProducts</title>
+</head>
+<body>
+    <h1>| Wemí cueros | </h1>
+    <h2>Productos</h2>
+    
+        <div>
+            <h3>Carga de producto</h3>
+            <form action="/" method="post" id="productForm" onsubmit="addProduct(); return false;">
+        
+                <label for="title">Nombre:</label>
+                <input type="text" id="title" required>    
+                
+                <label for="description">Descripción:</label>
+                <input type="text" id="description" required>
+                
+                <label for="price">Precio:</label>
+                <input type="number" id="price" required>
+                
+                <label for="thumbail">Imagen:</label>
+                <input type="text" id="thumbail" required>
+        
+                <label for="code">Código:</label>
+                <input type="text" id="code" required>
+                
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" required>    
+
+                <label for="category">Categoría:</label>
+                <input type="text" id="category" required>
+                
+                <input value="Agregar" type="submit" class="boton">
+
+            </form>
+        </div>
+        
+        <div>
+            <h3>Lista de productos actualizada</h3>
+            <ul id="productList">
+                {{#each products}}
+                    <li>
+                        <img src="{{this.thumbnail}}" alt="Imagen del Producto"><br>
+                        Nombre: {{this.title}} <br>
+                        Descripción: {{this.description}}<br>
+                        Precio: {{this.price}}<br>                       
+                        Código: {{this.code}}<br>
+                        Stock: {{this.stock}}<br>
+                        Categoría: {{this.category}}<br>
+                        
+                        <button type="button" class="boton" onclick="deleteProduct('{{this._id}}')">Eliminar</button>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>    
+        
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+
+</html>
