@@ -13,8 +13,6 @@ const MongoStore = require ('connect-mongo')
 const { configObject } = require ('./config/connectDB.js')
 const { handleErrors } = require ('./middleware/errors-midd/index.js')
 const { addLogger } = require("./utils/logger.js")
-const swaggerJsDocs = require('swagger-jsdoc')
-const swaggerUiExpress = require('swagger-ui-express')
 
 const app = express()
 const PORT = configObject.port
@@ -38,23 +36,7 @@ initializePassport()
 app.use(passport.initialize())
 
 app.use(addLogger)
-
-//ver si paso a otro archivo el objeto de configuración y la ruta
-const swaggerOptions = {
-    definition: {
-        openapi: '3.0.1',
-        info: {
-            title: 'Documentación de app Wemí cueros',
-            description: 'Descripción de nuestra app Wemí cueros'
-        }
-    },
-    apis: [`${__dirname}/docs/**/*.yaml`]   
-} 
-const specs = swaggerJsDocs(swaggerOptions)
-app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
-
 app.use (router)
-
 app.use(handleErrors)
 
 //configuración socket del lado del server

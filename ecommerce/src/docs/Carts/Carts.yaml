@@ -1,0 +1,313 @@
+paths: 
+  /api/carts/:
+    post: 
+      summary: Este endpoint crea un carrito. 
+      tags: 
+        - Carts 
+      requestBody:  
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/requestBodies/createCart' 
+      responses:
+        "201": 
+          description: El carrito fue creado correctamente.
+        "500":
+          description: No se pudo crear el carrito.
+
+  /api/carts/{cid}:
+    get:
+      summary: Este endpoint obtiene un carrito por id.
+      tags: 
+        - Carts 
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito es denominado cid.
+          schema: 
+            type: string
+      responses:
+        "200": 
+          description: El carrito fue obtenido correctamente.
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: No se pudo obtener el carrito.
+
+    put:
+      summary: Este endpoint actualiza un carrito. 
+      tags: 
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito es denominado cid.
+          schema: 
+            type: string 
+      requestBody:  
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/requestBodies/updateCart' 
+      responses:
+        "200": 
+          description: El carrito fue actualizado correctamente.
+        "500":
+          description: No se pudo actualizar el carrito.
+
+    delete:
+      summary: Este endpoint elimina todos los productos de un carrito por id.
+      tags: 
+        - Carts 
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito es denominado cid.
+          schema: 
+            type: string
+      responses:
+        "200": 
+          description: Se eliminaron los productos del carrito correctamente.
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: No se pudieron eliminar todos los productos del carrito.
+  
+  /api/carts/{cid}/purchase:
+    post: 
+      summary: Este endpoint es para finalizar el proceso de compra. 
+      tags: 
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito es denominado cid.
+          schema: 
+            type: string
+      requestBody:  
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/requestBodies/purchaseCart' 
+      responses:
+        "201": 
+          description: El proceso de compra finalizó correctamente.
+        "500":
+          description: No se pudo finalizar la compra.
+
+  /api/carts/{cid}/products/{pid}:
+    post: 
+      summary: Este endpoint es para agregar un producto a un carrito. 
+      tags: 
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito es denominado cid.
+          schema: 
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto es denominado pid.
+          schema: 
+            type: string        
+      requestBody:  
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/requestBodies/addProductToCart'
+      responses:
+        "201": 
+          description: Se agregó el producto correctamente al carrito.
+        "500":
+          description: No se pudo agregar el producto al carrito.
+
+    put:
+      summary: Este endpoint es para actualizar solo la cantidad de un producto en el carrito. 
+      tags: 
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito es denominado cid.
+          schema: 
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto es denominado pid.
+          schema: 
+            type: string
+      requestBody:  
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/requestBodies/updateCart' #ver referencia
+      responses:
+        "200": 
+          description: La cantidad del producto fue actualizado correctamente.
+        "500":
+          description: No se pudo actualizar la cantidad del producto.
+
+    delete:
+      summary: Este endpoint es para eliminar un producto de un carrito.
+      tags: 
+        - Carts 
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito es denominado cid.
+          schema: 
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto es denominado pid.
+          schema: 
+            type: string
+      responses:
+        "200": 
+          description: Se eliminó el producto del carrito correctamente.
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: No se pudo eliminar el producto del carrito.
+
+components:
+  schemas: 
+    Cart:
+      type: object
+      properties: 
+        _id:
+          type: objectId
+          description: Id autogenerado por Mongo
+        products: 
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: object
+                properties:
+                  _id:
+                    type: objectId
+                    description: Id autogenerado por Mongo
+                  title:
+                    type: string
+                    description: Nombre del producto.
+                  description:
+                    type: string
+                    description: Descripción del producto.
+                  price:
+                    type: number
+                    description: Precio del producto.
+                  category:
+                    type: string
+                    description: Categoría del producto.
+                  status:
+                    type: boolean
+                    description: Estado del producto.
+                  owner:
+                    type: string
+                    description: Propietario del producto.
+              quantity: 
+                type: number
+                description: Cantidad del producto en el carrito.
+
+      example:
+        _id: ObjectId('alasfajfaslñdf65asdfasdf56asdfasd')
+        products: 
+        - productId: ObjectId('alasfajfasljdha')
+          quantity: 2
+        - productId: ObjectId('hdgiunmldgkpero')
+          quantity: 1
+
+  requestBodies: 
+    createCart: 
+      required: []
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              products:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    productId:
+                      type: objectId
+                      description: Id autogenerado por Mongo
+                    quantity:
+                      type: number
+                      description: Cantidad del producto en el carrito.
+            example:
+              products: 
+                - productId: ObjectId('alas99jfasljdha')
+                  quantity: 2
+                - productId: ObjectId('hdgiunmldgkpero')
+                  quantity: 1
+
+    purchaseCart: 
+      required: []
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: {}
+            example: {}
+
+    addProductToCart:
+      required: []
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              productId:
+                type: objectId
+                description: Id autogenerado por Mongo
+              quantity:
+                type: number
+                description: Cantidad del producto a agregar al carrito.
+            example:
+              productId: ObjectId('alasfajfybgffgasljdha')
+              quantity: 1
+
+    updateCart:
+      required: []
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cartId:
+                type: objectId
+                description: Id del carrito a actualizar
+              updates:
+                type: object
+                description: Objeto con las actualizaciones a realizar
+            example:
+              cartId: ObjectId('alasfajfaslñdf65asdfasdf56asdfasd')
+              updates:
+                product: ObjectId('alasfajfasljdha')
+                quantity: 3

@@ -1,0 +1,197 @@
+paths: 
+  /api/products/:
+    get:
+      summary: Este endpoint obtiene todos los productos.
+      tags:
+        - Products
+      responses:
+        "200": 
+          description: Obtiene todos los productos
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Product'
+        "500":
+          description: Error interno del server.
+
+    post: 
+      summary: Este endpoint crea un producto. 
+      tags: 
+        - Products 
+      requestBody:  
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/requestBodies/createProduct' 
+      responses:
+        "201": 
+          description: El producto fue creado correctamente.
+        "500":
+          description: No se pudo crear el producto.
+
+  /api/products/{pid}:
+    get:
+      summary: Este endpoint obtiene un producto por id.
+      tags: 
+        - Products 
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto es denominado pid.
+          schema: 
+            type: string
+      responses:
+        "200": 
+          description: El producto fue obtenido correctamente.
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Product'
+        "500":
+          description: No se pudo obtener el producto.
+
+    put:
+      summary: Este endpoint actualiza un producto. 
+      tags: 
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto es denominado pid.
+          schema: 
+            type: string 
+      requestBody:  
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/requestBodies/updateProduct' 
+      responses:
+        "200": 
+          description: El producto fue actualizado correctamente.
+        "500":
+          description: No se pudo actualizar el producto.
+
+    delete:
+      summary: Este endpoint elimina un producto por id.
+      tags: 
+        - Products 
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto es denominado pid.
+          schema: 
+            type: string
+      responses:
+        "200": 
+          description: El producto fue eliminado correctamente.
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Product'
+        "500":
+          description: No se pudo eliminar el producto.
+
+
+components:
+  schemas: 
+    Product:
+      type: object
+      properties: 
+        _id:
+          type: objectId
+          description: Id autogenerado por Mongo
+        title: 
+          type: string
+          description: Nombre del producto
+        description: 
+          type: string
+          description: Características del producto
+        price: 
+          type: number
+          description: Precio del producto
+        category: 
+          type: string
+          description: Categoría del producto
+        status:
+          type: boolean
+          description: Disponibilidad del producto
+        owner:
+          type: string
+          description: Creador del producto
+
+      example: 
+        _id: ObjectId('alasfajfaslñdf65asdfasdf56asdfasd')
+        title: Cartera Luna
+        description: Cartera en cuero forrado con bolsillos interiores
+        price: 15000  
+        category: Carteras
+        status: true
+        owner: g@hotmail.com 
+
+  requestBodies: 
+    createProduct: 
+      type: object
+      properties: 
+        title: 
+          type: String
+          description: Nombre del producto
+        description: 
+          type: String
+          description: Características del producto
+        price: 
+          type: Number
+          description: Precio del producto
+        category: 
+          type: String
+          description: Categoría del producto
+        status:
+          type: Boolean
+          description: Disponibilidad del producto
+        owner:
+          type: String
+          description: Creador del producto
+
+      example:
+        title: Cartera Luna
+        description: Cartera en cuero forrado con bolsillos interiores
+        price: 15000  
+        category: Carteras
+        status: true
+        owner: g@hotmail.com
+
+    updateProduct: 
+      type: object
+      properties: 
+        title: 
+          type: String
+          description: Nombre del producto
+        description: 
+          type: String
+          description: Características del producto
+        price: 
+          type: Number
+          description: Precio del producto
+        category: 
+          type: String
+          description: Categoría del producto
+        status:
+          type: Boolean
+          description: Disponibilidad del producto
+        owner:
+          type: String
+          description: Creador del producto
+
+      example:
+        title: Cartera Luna
+        description: Cartera en cuero forrado con bolsillos interiores
+        price: 15000  
+        category: Carteras
+        status: true
+        owner: g@hotmail.com
